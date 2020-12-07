@@ -35,7 +35,7 @@ public class Producer extends Thread {
 	}
 	
 	public Message produce(Message m) throws InterruptedException {
-		Thread.sleep(prodTime);
+		sleep(prodTime);
 		buffer.put(m);
 		return m;
 	}

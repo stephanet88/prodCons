@@ -36,27 +36,26 @@ public class TestProdCons {
 		Collections.shuffle(run);
 		
 		for (int i = 0; i < run.size(); i++) {
-//			System.out.println(run.get(i));
 			if(run.get(i) < nProd) {
 				producers[run.get(i)].start();
 			}
 			else 
 				consumers[run.get(i) - nProd].start();
 		}
-		
-		Thread.yield();
-		
-		for (int i = 0; i < nProd + nCons; i++) {
-			if(i < nProd)
-				producers[i].join();
-			else 
-				consumers[i - nProd].join();
+				
+		for (int i = 0; i < nProd; i++) {
+			producers[i].join();
 		}
+				
+		while (buff.nmsg()!= 0) {
+			System.out.println(buff.nmsg());
+		}
+				
+		stopAll();
 		
-	}
-	
-	public boolean doStop() {
-		return (nbMessage == buff.getNbConsumed());
+		System.out.println("That's all!");
+
+		
 	}
 	
 	public static void main(String[] args) throws InvalidPropertiesFormatException, IOException, InterruptedException {
@@ -79,10 +78,10 @@ public class TestProdCons {
 	}
 
 	public void stopAll() {
+		
 		for (int i = 0; i < producers.length; i++) {
-			producers[i].stop();
+			producers[i].interrupt();
 		}
-		System.out.println("That's all!");
 	}
 	
 }

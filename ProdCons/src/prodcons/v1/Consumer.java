@@ -16,19 +16,17 @@ public class Consumer extends Thread {
 	}
 	
 	public void run() {
-		while(true) {
-			try {
-				if(buffer.doStop()) {
-					buffer.tester.stopAll();
-					return;
-				}
-				Thread.sleep(consTime);
+		try {
+			while(true) {
+				sleep(consTime);
 				consume();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return;
 		}
+		
 	}
 	
 	public void consume() throws InterruptedException {

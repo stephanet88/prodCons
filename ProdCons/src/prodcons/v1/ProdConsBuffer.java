@@ -2,18 +2,16 @@ package prodcons.v1;
 
 public class ProdConsBuffer implements IProdConsBuffer {
 	
-	TestProdCons tester;
 	Message[] buffer;
 	int prod, cons;
 	int m_tot, m_got;
 
-	public ProdConsBuffer(int tailleBuffer, TestProdCons test) {
+	public ProdConsBuffer(int tailleBuffer) {
 		buffer = new Message[tailleBuffer];
 		prod = 0;
 		cons = 0;
 		m_tot = 0;
 		m_got = 0;
-		tester = test;
 	}
 
 	@Override

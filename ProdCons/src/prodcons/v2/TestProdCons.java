@@ -1,4 +1,4 @@
-package prodcons.v1;
+package prodcons.v2;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -46,10 +46,8 @@ public class TestProdCons {
 		for (int i = 0; i < nProd; i++) {
 			producers[i].join();
 		}
-				
-		while (buff.nmsg()!= 0) {
-			System.out.println(buff.nmsg());
-		}
+						
+		while (buff.nmsg()!= 0);
 				
 		stopAll();
 		
@@ -74,8 +72,6 @@ public class TestProdCons {
 		int sizeBuffer = Integer.parseInt(properties.getProperty("bufSz"));
 		
 		TestProdCons tests = new TestProdCons(sizeBuffer, nProd, minProd, maxProd, prodTime, nCons, consTime);
-		
-		return;
 		
 	}
 

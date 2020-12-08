@@ -3,27 +3,31 @@ package prodcons.v2;
 public class Consumer extends Thread {
 	
 	int consTime;
+	ProdConsBuffer buffer;
 	
-	public Consumer(int time) {
+	public Consumer(int time, ProdConsBuffer buff) {
 		
 		consTime = time;
+		buffer = buff;
 		
 	}
 	
 	public void run() {
-		while(true) {
-			try {
-				//...
-				Thread.sleep(consTime);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+		try {
+			while(true) {
+				sleep(consTime);
+				consume();
 			}
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return;
 		}
+		
 	}
 	
-	public void consume(Message m) {
-		
+	public void consume() throws InterruptedException {
+		buffer.get();
 	}
 
 }

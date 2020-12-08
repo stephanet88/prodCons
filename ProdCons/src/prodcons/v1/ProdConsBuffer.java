@@ -38,7 +38,7 @@ public class ProdConsBuffer implements IProdConsBuffer {
 		cons++;
 		cons = cons % buffer.length;
 		m_got++;
-		System.out.println("nbConsumed : " + m_got);
+//		System.out.println("nbConsumed : " + m_got);
 		notifyAll();
 		return m;
 	}
@@ -51,6 +51,10 @@ public class ProdConsBuffer implements IProdConsBuffer {
 	@Override
 	public int totmsg() {
 		return m_tot;
+	}
+	
+	public Message [] getMessageBuffer() {
+		return buffer;
 	}
 	
 }

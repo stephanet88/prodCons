@@ -82,7 +82,7 @@ public class TestProdCons {
 	public void stopAll() {
 		
 		for (int i = 0; i < consumers.length; i++) {
-			consumers[i].stop();
+			consumers[i].interrupt();
 		}
 	}
 	

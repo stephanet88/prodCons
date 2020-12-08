@@ -4,10 +4,11 @@ public class Message {
 
 	String message;
 	
-	public Message(String mess) {
-		
-		message = mess;
-		
+	public Message(String m) {
+		message = m;
 	}
 	
+	public String toString() {
+		return message;
+	}
 }

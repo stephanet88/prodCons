@@ -2,7 +2,6 @@ package prodcons.v2;
 
 import java.util.concurrent.Semaphore;
 
-
 public class ProdConsBuffer implements IProdConsBuffer {
 
 	Message[] buffer;
@@ -10,9 +9,9 @@ public class ProdConsBuffer implements IProdConsBuffer {
 	Semaphore put, get;
 	int prod, cons;
 	int m_tot, m_got;
-	
+
 	public ProdConsBuffer(int buffSize) {
-		
+
 		buffer = new Message[buffSize];
 		sem = new Semaphore(1);
 		put = new Semaphore(buffSize);
@@ -21,20 +20,23 @@ public class ProdConsBuffer implements IProdConsBuffer {
 		m_got = 0;
 		prod = 0;
 		cons = 0;
-		
+
 	}
 
 	@Override
 	public void put(Message m) throws InterruptedException {
-		
+
 		put.acquire();
 		sem.acquire();
-		m_tot++;
-		buffer[prod] = m;
-		prod = (prod + 1) % buffer.length;
-		sem.release();
-		get.release();
-		
+		try {
+			m_tot++;
+			buffer[prod] = m;
+			prod = (prod + 1) % buffer.length;
+		} finally {
+			sem.release();
+			get.release();
+		}
+
 	}
 
 	@Override
@@ -42,17 +44,19 @@ public class ProdConsBuffer implements IProdConsBuffer {
 		get.acquire();
 		sem.acquire();
 		Message m = buffer[cons];
-		if(nmsg() > 0) {
-			cons = (cons + 1) % buffer.length;
-			m_got++;
-			buffer[cons] = null;
-			sem.release();
-		}
+		try {
+			if (nmsg() > 0) {
+				cons = (cons + 1) % buffer.length;
+				m_got++;
+				buffer[cons] = null;
+			}
 //		System.out.println(m);
-		sem.release();
-		put.release();
+		} finally {
+			sem.release();
+			put.release();
+		}
 		return m;
-		
+
 	}
 
 	@Override
@@ -64,8 +68,8 @@ public class ProdConsBuffer implements IProdConsBuffer {
 	public int totmsg() {
 		return m_tot;
 	}
-	
-	public Message [] getMessageBuffer() {
+
+	public Message[] getMessageBuffer() {
 		return buffer;
 	}
 }

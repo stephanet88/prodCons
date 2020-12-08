@@ -34,7 +34,7 @@ public class TestProdCons {
 		}
 		
 		Collections.shuffle(run);
-		
+		long start = System.currentTimeMillis();		
 		for (int i = 0; i < run.size(); i++) {
 			if(run.get(i) < nProd) {
 				producers[run.get(i)].start();
@@ -48,9 +48,12 @@ public class TestProdCons {
 		}
 						
 		while (buff.nmsg()!= 0);
-				
+		long end = System.currentTimeMillis();		
 		stopAll();
 		
+		
+		System.out.printf("L'efficacité est de : %f\n",(float)nbMessage/(end-start));
+
 		System.out.println("That's all!");
 
 		
@@ -78,7 +81,7 @@ public class TestProdCons {
 	public void stopAll() {
 		
 		for (int i = 0; i < consumers.length; i++) {
-			consumers[i].stop();
+			consumers[i].interrupt();
 		}
 	}
 	

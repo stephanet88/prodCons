@@ -33,8 +33,8 @@ public class TestProdCons {
 			run.add(i + nProd);
 		}
 		
-		Collections.shuffle(run);
-		
+		Collections.shuffle(run);	
+		long start = System.currentTimeMillis();		
 		for (int i = 0; i < run.size(); i++) {
 			if(run.get(i) < nProd) {
 				producers[run.get(i)].start();
@@ -48,10 +48,12 @@ public class TestProdCons {
 		}
 				
 		while (buff.nmsg()!= 0) {
-			System.out.println(buff.nmsg());
+		//	System.out.println(buff.nmsg());
 		}
-				
+		long end = System.currentTimeMillis();				
 		stopAll();
+		
+		System.out.printf("L'efficacité est de : %f\n",(float)nbMessage/(end-start));
 		
 		System.out.println("That's all!");
 
@@ -82,7 +84,7 @@ public class TestProdCons {
 	public void stopAll() {
 		
 		for (int i = 0; i < consumers.length; i++) {
-			consumers[i].stop();
+			consumers[i].interrupt();
 		}
 	}
 	

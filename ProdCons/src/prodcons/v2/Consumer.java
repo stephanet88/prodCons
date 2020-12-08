@@ -20,14 +20,16 @@ public class Consumer extends Thread {
 			}
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
 			return;
 		}
 		
 	}
 	
 	public void consume() throws InterruptedException {
-		buffer.get();
+		Message m = buffer.get();
+		if (m == null)
+			System.out.println(Thread.currentThread().getId());
 	}
 
 }

@@ -13,7 +13,7 @@ public class ProdConsBuffer implements IProdConsBuffer {
 	public ProdConsBuffer(int buffSize) {
 		
 		buffer = new Message[buffSize];
-		sem = new Semaphore(1);
+		sem = new Semaphore(buffSize);
 		put = new Semaphore(1);
 		get = new Semaphore(1);
 		m_tot = 0;
@@ -24,7 +24,7 @@ public class ProdConsBuffer implements IProdConsBuffer {
 	}
 
 	@Override
-	public void put(Message m) throws InterruptedException {
+	public synchronized void put(Message m) throws InterruptedException {
 		
 		put.acquire();
 		sem.acquire();
@@ -36,16 +36,16 @@ public class ProdConsBuffer implements IProdConsBuffer {
 	}
 
 	@Override
-	public Message get() throws InterruptedException {
+	public synchronized Message get() throws InterruptedException {
 
 		get.acquire();
 		Message m = buffer[cons];
-		if(nmsg() > 0) {
+//		if(nmsg() > 0) {
 			cons = (cons + 1) % buffer.length;
 			m_got++;
 			buffer[cons] = null;
 			sem.release();
-		}
+//		}
 		System.out.println(m);
 		get.release();
 		return m;

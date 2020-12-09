@@ -4,7 +4,9 @@ public interface IProdConsBuffer {
 
 //	String[] buffer;
 
-	/** Put the message m in the prodcons buffer **/
+	/** 
+	 * Put the message m in the prodcons buffer 
+	 **/
 	public void put(Message m) throws InterruptedException;
 
 	/**
@@ -12,6 +14,11 @@ public interface IProdConsBuffer {
 	 * put before M2, M& will be get before M2)
 	 **/
 	public Message get() throws InterruptedException;
+	
+	/**
+	 * Retrieve k consecutive messages from the prodcons buffer 
+	 **/
+	public Message[] get(int k) throws InterruptedException;
 
 	/**
 	 * Returns the number of messages currently available in theprod-cons buffer
@@ -23,8 +30,5 @@ public interface IProdConsBuffer {
 	 * its creation
 	 **/
 	public int totmsg();
-
-	/*** Retrieve nconsecutive messagesfrom the prodcons buffer **/
-	public Message[] get(int k) throws InterruptedException;
 
 }

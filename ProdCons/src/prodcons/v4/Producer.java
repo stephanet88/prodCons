@@ -7,14 +7,16 @@ public class Producer extends Thread {
 	int minProd, maxProd;
 	int nbMessage;
 	int prodTime;
+	int maxEx;
 	
-	public Producer(int min, int max, int time, ProdConsBuffer buff) {
+	public Producer(int min, int max, int time, ProdConsBuffer buff, int maxE) {
 		
 		minProd = min;
 		maxProd = max;
 		prodTime = time;
 		buffer = buff;
 		nbMessage = (int) (Math.random() * (maxProd - minProd) + minProd);
+		maxEx = maxE;
 		
 	}
 	
@@ -22,7 +24,8 @@ public class Producer extends Thread {
 		
 		try {
 			for (int i = 0; i < nbMessage; i++) {	
-				produce(new Message("Message n°" + i + " of Thread n°" + this.getId()));
+				Message m = new Message("Message n°" + i + " of Thread n°" + this.getId());
+				produce(m);
 			}
 		} catch (InterruptedException e) {	
 			// TODO Auto-generated catch block
@@ -33,7 +36,11 @@ public class Producer extends Thread {
 	
 	public Message produce(Message m) throws InterruptedException {
 		sleep(prodTime);
-		buffer.put(m);
+		if(Math.random() > 0.95) {
+			buffer.put(m, (int)(Math.random() * maxEx + 1) );
+		} else {
+			buffer.put(m);
+		}
 		return m;
 	}
 

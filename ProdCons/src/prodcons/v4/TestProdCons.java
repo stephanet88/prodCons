@@ -21,7 +21,7 @@ public class TestProdCons {
 		
 		producers = new Producer[nProd];
 		for (int i = 0; i < nProd; i++) {
-			producers[i] = new Producer(minProd, maxProd, prodTime, buff);
+			producers[i] = new Producer(minProd, maxProd, prodTime, buff, nCons);
 			nbMessage += producers[i].getNbMessage();
 			run.add(i);
 		}

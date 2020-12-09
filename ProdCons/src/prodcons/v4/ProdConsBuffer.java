@@ -38,7 +38,14 @@ public class ProdConsBuffer implements IProdConsBuffer {
 	
 	@Override
 	public void put(Message m, int n) throws InterruptedException {
-		// TODO Auto-generated method stub
+		
+		sem.acquire();
+		try {
+			buffer[prod] = m;
+			incrProd();
+		} finally {
+			get.release();
+		}
 		
 	}
 

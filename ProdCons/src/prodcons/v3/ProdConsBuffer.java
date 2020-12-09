@@ -2,12 +2,11 @@ package prodcons.v3;
 
 import java.util.concurrent.Semaphore;
 
-
 public class ProdConsBuffer implements IProdConsBuffer {
 
 	Message[] buffer;
 	Semaphore sem;
-	Semaphore get;
+	Semaphore get, getk;
 	int prod, cons;
 	int m_tot, m_got;
 	
@@ -16,6 +15,7 @@ public class ProdConsBuffer implements IProdConsBuffer {
 		buffer = new Message[buffSize];
 		sem = new Semaphore(buffSize);
 		get = new Semaphore(0);
+		getk = new Semaphore(1);
 		m_tot = 0;
 		m_got = 0;
 		prod = 0;
@@ -38,15 +38,12 @@ public class ProdConsBuffer implements IProdConsBuffer {
 
 	@Override
 	public Message get() throws InterruptedException {
-		get.acquire();
-		Message m = buffer[cons];
+		getk.acquire();
+		Message m = null;
 		try {
-			if (nmsg() > 0) {
-				incrCons();
-				buffer[cons] = null; // Permet de tester si les wait fonctionnent dans consume
-			}
+			m = doGet();
 		} finally {
-			sem.release();
+			getk.release();
 			}
 		return m;
 
@@ -54,10 +51,12 @@ public class ProdConsBuffer implements IProdConsBuffer {
 	
 	@Override
 	public Message[] get(int k) throws InterruptedException {
+		getk.acquire();
 		Message [] res = new Message[k];
 		for (int i = 0; i < k; i++) {
-			res[i] = get();
+			res[i] = doGet();
 		}
+		getk.release();
 		return res;
 	}
 
@@ -69,6 +68,20 @@ public class ProdConsBuffer implements IProdConsBuffer {
 	@Override
 	public int totmsg() {
 		return m_tot;
+	}
+	
+	public Message doGet() throws InterruptedException {
+		get.acquire();
+		Message m = buffer[cons];
+		try {
+			if (nmsg() > 0) {
+				incrCons();
+				buffer[cons] = null; // Permet de tester si les wait fonctionnent dans consume
+			}
+		} finally {
+			sem.release();
+		}
+		return m;
 	}
 
 	public Message[] getMessageBuffer() {

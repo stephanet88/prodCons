@@ -25,10 +25,10 @@ public class Consumer extends Thread {
 	
 	public void consume(int k) throws InterruptedException {
 		Message [] m = buffer.get(k);
-/*		for (int i = 0; i < k; i++) {
+		for (int i = 0; i < k; i++) {
 			if (m[i] == null)
 				System.out.println(Thread.currentThread().getId());
-		}*/
+		}
 	}	
 
 }

@@ -2,11 +2,13 @@ package prodcons.v4;
 
 public class Message {
 
-	String Message;
-	int idThreadProd;
+	String message;
 	
-	public Message() {
-		
+	public Message(String m) {
+		message = m;
 	}
 	
+	public String toString() {
+		return message;
+	}
 }

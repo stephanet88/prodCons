@@ -32,9 +32,10 @@ public class TestProdCons {
 			consumers[i] = new Consumer(consTime, buff, minLec, maxLec);
 			run.add(i + nProd);
 		}
-		
 		Collections.shuffle(run);
+		
 		long start = System.currentTimeMillis();		
+		
 		for (int i = 0; i < run.size(); i++) {
 			if(run.get(i) < nProd) {
 				producers[run.get(i)].start();
@@ -48,14 +49,14 @@ public class TestProdCons {
 		}
 						
 		while (buff.nmsg()!= 0);
-		long end = System.currentTimeMillis();		
-		stopAll();
 		
+		long end = System.currentTimeMillis();		
+		
+		stopAll();
 		
 		System.out.printf("L'efficacité est de pour plusieurs lectures: %f\n",(float)nbMessage/(end-start));
 
 		System.out.println("That's all!");
-
 		
 	}
 	

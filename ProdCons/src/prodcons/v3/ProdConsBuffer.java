@@ -7,25 +7,14 @@ public class ProdConsBuffer implements IProdConsBuffer {
 
 	Message[] buffer;
 	Semaphore sem;
-	Semaphore put, get;
+	Semaphore get;
 	int prod, cons;
 	int m_tot, m_got;
-
-	
-
-	public synchronized void incrCons() {
-		cons = (cons + 1) % buffer.length;
-	}
-	
-	public synchronized void incrProd() {
-		prod = (prod + 1) % buffer.length;
-	}
 	
 	public ProdConsBuffer(int buffSize) {
 
 		buffer = new Message[buffSize];
-//		sem = new Semaphore(1);
-		put = new Semaphore(buffSize);
+		sem = new Semaphore(buffSize);
 		get = new Semaphore(0);
 		m_tot = 0;
 		m_got = 0;
@@ -37,13 +26,11 @@ public class ProdConsBuffer implements IProdConsBuffer {
 	@Override
 	public void put(Message m) throws InterruptedException {
 
-		put.acquire();
-//		sem.acquire();
+		sem.acquire();
 		try {
 			buffer[prod] = m;
 			incrProd();
 		} finally {
-//			sem.release();
 			get.release();
 		}
 
@@ -52,18 +39,15 @@ public class ProdConsBuffer implements IProdConsBuffer {
 	@Override
 	public Message get() throws InterruptedException {
 		get.acquire();
-//		sem.acquire();
 		Message m = buffer[cons];
 		try {
 			if (nmsg() > 0) {
 				incrCons();
 				buffer[cons] = null; // Permet de tester si les wait fonctionnent dans consume
 			}
-//		System.out.println(m);
 		} finally {
-//			sem.release();
-			put.release();
-		}
+			sem.release();
+			}
 		return m;
 
 	}
@@ -89,6 +73,14 @@ public class ProdConsBuffer implements IProdConsBuffer {
 
 	public Message[] getMessageBuffer() {
 		return buffer;
+	}
+	
+	public synchronized void incrCons() {
+		cons = (cons + 1) % buffer.length;
+	}
+	
+	public synchronized void incrProd() {
+		prod = (prod + 1) % buffer.length;
 	}
 
 }

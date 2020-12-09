@@ -30,7 +30,6 @@ public class ProdConsBuffer implements IProdConsBuffer {
 			buffer[prod] = m;
 			incrProd();
 		} finally {
-			sem.release();
 			get.release();
 		}
 
@@ -39,7 +38,6 @@ public class ProdConsBuffer implements IProdConsBuffer {
 	@Override
 	public Message get() throws InterruptedException {
 		get.acquire();
-		sem.acquire();
 		Message m = buffer[cons];
 		try {
 			incrCons();

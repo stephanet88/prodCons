@@ -5,11 +5,9 @@ public class Consumer extends Thread {
 	int consTime;
 	ProdConsBuffer buffer;
 	
-	public Consumer(int time, ProdConsBuffer buff) {
-		
+	public Consumer(int time, ProdConsBuffer buff) {		
 		consTime = time;
 		buffer = buff;
-		
 	}
 	
 	public void run() {

@@ -1,26 +1,44 @@
 package prodcons.v3;
 
+
 public class Producer extends Thread {
 	
+	ProdConsBuffer buffer;
 	int minProd, maxProd;
+	int nbMessage;
 	int prodTime;
 	
-	public Producer(int min, int max, int time) {
+	public Producer(int min, int max, int time, ProdConsBuffer buff) {
 		
 		minProd = min;
 		maxProd = max;
 		prodTime = time;
+		buffer = buff;
+		nbMessage = (int) (Math.random() * (maxProd - minProd) + minProd);
 		
 	}
 	
 	public void run() {
 		
-		int nbMessage = (int) (Math.random() * (maxProd - minProd) + minProd);
+		try {
+			for (int i = 0; i < nbMessage; i++) {	
+				produce(new Message("Message n°" + i + " of Thread n°" + this.getId()));
+			}
+		} catch (InterruptedException e) {	
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 	
-	public void produce(Message m) {
-		
+	public Message produce(Message m) throws InterruptedException {
+		sleep(prodTime);
+		buffer.put(m);
+		return m;
+	}
+
+	public int getNbMessage() {
+		return nbMessage;
 	}
 
 }

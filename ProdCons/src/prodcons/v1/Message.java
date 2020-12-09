@@ -8,4 +8,7 @@ public class Message {
 		message = m;
 	}
 	
+	public String toString() {
+		return message;
+	}
 }

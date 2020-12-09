@@ -28,18 +28,18 @@ public class ProdConsBuffer implements IProdConsBuffer {
 	}
 
 	@Override
-	public synchronized Message get() {
+	public synchronized Message get() throws InterruptedException {
 		while(!(nmsg() > 0)) {
 			try { wait();}
-			catch(InterruptedException e) {}
+			catch(InterruptedException e) {
+				throw e;
+			}
 		}
 		Message m = buffer[cons];
 		buffer[cons] = null;	
-		cons++;
-		cons = cons % buffer.length;
+		cons = (cons + 1) % buffer.length;
 		m_got++;
 //		System.out.println("nbConsumed : " + m_got);
-		notifyAll();
 		return m;
 	}
 

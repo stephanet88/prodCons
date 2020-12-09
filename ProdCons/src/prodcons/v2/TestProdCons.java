@@ -48,11 +48,13 @@ public class TestProdCons {
 		}
 						
 		while (buff.nmsg()!= 0);
-		long end = System.currentTimeMillis();		
+		long end = System.currentTimeMillis();	
 		stopAll();
+
+
 		
 		
-		System.out.printf("L'efficacité est de : %f\n",(float)nbMessage/(end-start));
+		System.out.printf("L'efficacité est de pour la solution sémaphore: %f\n",(float)nbMessage/(end-start));
 
 		System.out.println("That's all!");
 
@@ -79,7 +81,6 @@ public class TestProdCons {
 	}
 
 	public void stopAll() {
-		
 		for (int i = 0; i < consumers.length; i++) {
 			consumers[i].interrupt();
 		}

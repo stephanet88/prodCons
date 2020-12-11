@@ -54,7 +54,7 @@ public class TestProdCons {
 		
 		stopAll();
 		
-		System.out.printf("L'efficacité est de pour plusieurs lectures: %f\n",(float)nbMessage/(end-start));
+		System.out.printf("L'efficacité est de %f pour plusieurs lectures\n",(float)nbMessage/(end-start));
 
 		System.out.println("That's all!");
 		

@@ -13,7 +13,7 @@ public interface IProdConsBuffer {
 	 * Put n instances of the message m in the prodcons buffer
 	 * The current thread is blocked until all
 	 * instances of the message have been consumed
-	 * Any consumer is also blocked until all the instances of 
+	 * Any consumer is also blocked until all the instances of
 	 * the message have been consumed
 	 **/
 	public void put(Message m, int n) throws InterruptedException;

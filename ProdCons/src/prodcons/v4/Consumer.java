@@ -15,13 +15,19 @@ public class Consumer extends Thread {
 		while(true) {
 			try {
 				sleep(consTime);
-				consume(m_nReadings);
+				consume(); // On ne peut pas appeler consume(k) dans cette version car ce n'est pas compatible avec put(m, n)
 			} catch (InterruptedException e) {
 				//e.printStackTrace();
 				return;
 			}
 		}
 	}
+	
+	public void consume() throws InterruptedException {
+		Message m = buffer.get();
+		if (m == null)
+			System.out.println(Thread.currentThread().getId());
+	}	
 	
 	public void consume(int k) throws InterruptedException {
 		Message [] m = buffer.get(k);

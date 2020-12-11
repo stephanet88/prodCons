@@ -23,6 +23,12 @@ public class Consumer extends Thread {
 		}
 	}
 	
+	public void consume() throws InterruptedException {
+		Message m = buffer.get();
+		if (m == null)
+			System.out.println(Thread.currentThread().getId());
+	}	
+	
 	public void consume(int k) throws InterruptedException {
 		Message [] m = buffer.get(k);
 		for (int i = 0; i < k; i++) {

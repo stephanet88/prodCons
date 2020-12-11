@@ -40,8 +40,8 @@ public class ProdConsBuffer implements IProdConsBuffer {
 		get.acquire();
 		Message m = buffer[cons];
 		try {
+			buffer[cons] = null; 
 			incrCons();
-			buffer[cons] = null; // Permet de tester si les wait fonctionnent dans consume
 		} finally {
 			sem.release();
 		}
@@ -64,10 +64,12 @@ public class ProdConsBuffer implements IProdConsBuffer {
 	}
 	
 	public synchronized void incrCons() {
+		m_got++;
 		cons = (cons + 1) % buffer.length;
 	}
 	
 	public synchronized void incrProd() {
+		m_tot++;
 		prod = (prod + 1) % buffer.length;
 	}
 }

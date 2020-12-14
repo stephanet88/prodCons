@@ -40,7 +40,6 @@ public class ProdConsBuffer implements IProdConsBuffer {
 	public void put(Message m, int n) throws InterruptedException {
 
 		sem.acquire();
-		int p = prod;
 		Semaphore sema = m.sem;
 		try {
 			buffer[prod] = m;
@@ -88,29 +87,22 @@ public class ProdConsBuffer implements IProdConsBuffer {
 		get.acquire();
 		Message m = buffer[cons];
 		try {
-			if (nmsg() > 0) {
-//				System.out.println("doGet");
-				int newNb = m.nbExamplaire - 1;
-				Semaphore sema = m.sem;
-				if(newNb == 0) {
-					if(sema != null) {
-//						System.out.println("waiting");
-//						System.out.println(m.getNbAcq());
-						for(int i = 0; i < m.getNbAcq(); i++) {
-//							System.out.println(".");
-							sema.release();
-						}
+			int newNb = m.nbExamplaire - 1;
+			Semaphore sema = m.sem;
+			if(newNb == 0) {
+				if(sema != null) {
+					for(int i = 0; i < m.getNbAcq(); i++) {
+						sema.release();
 					}
-					buffer[cons] = null; 
-					incrCons();
-					sem.release();
-				} else {
-					buffer[cons].setEx(newNb);
-//					System.out.println("nice : " + newNb);
-					m.addNbAcq();
-					get.release();
-					sema.acquire();
 				}
+				buffer[cons] = null; 
+				incrCons();
+				sem.release();
+			} else {
+				buffer[cons].setEx(newNb);
+				m.addNbAcq();
+				get.release();
+				sema.acquire();
 			}
 		} finally {
 		}
@@ -122,12 +114,10 @@ public class ProdConsBuffer implements IProdConsBuffer {
 	}
 	
 	public synchronized void incrCons() {
-		m_got++;
 		cons = (cons + 1) % buffer.length;
 	}
 	
 	public synchronized void incrProd() {
-		m_tot++;
 		prod = (prod + 1) % buffer.length;
 	}
 

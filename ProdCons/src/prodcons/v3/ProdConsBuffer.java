@@ -74,10 +74,8 @@ public class ProdConsBuffer implements IProdConsBuffer {
 		get.acquire();
 		Message m = buffer[cons];
 		try {
-			if (nmsg() > 0) {
-				buffer[cons] = null; 
-				incrCons();
-			}
+			buffer[cons] = null; 
+			incrCons();
 		} finally {
 			sem.release();
 		}
@@ -89,12 +87,10 @@ public class ProdConsBuffer implements IProdConsBuffer {
 	}
 	
 	public synchronized void incrCons() {
-		m_got++;
 		cons = (cons + 1) % buffer.length;
 	}
 	
 	public synchronized void incrProd() {
-		m_tot++;
 		prod = (prod + 1) % buffer.length;
 	}
 

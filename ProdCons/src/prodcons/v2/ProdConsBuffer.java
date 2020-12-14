@@ -28,7 +28,7 @@ public class ProdConsBuffer implements IProdConsBuffer {
 		sem.acquire();
 		try {
 			setMessageP(m);
-			incrProd();
+		//	incrProd();
 		} finally {
 			get.release();
 		}
@@ -37,6 +37,7 @@ public class ProdConsBuffer implements IProdConsBuffer {
 	
 	public synchronized void setMessageP(Message m) {
 		buffer[prod] = m;
+		prod = (prod + 1) % buffer.length;
 	}
 
 	@Override
@@ -45,8 +46,8 @@ public class ProdConsBuffer implements IProdConsBuffer {
 		Message m;
 		try {
 			m = getMessageC();
-			setMessageC(null); 
-			incrCons();
+//			setMessageC(null); 
+//			incrCons();
 		} finally {
 			sem.release();
 		}
@@ -55,8 +56,12 @@ public class ProdConsBuffer implements IProdConsBuffer {
 	}
 	
 	public synchronized Message getMessageC() {
-		return buffer[cons];
+		Message m =  buffer[cons];
+		buffer[cons] = null;
+		cons = (cons + 1) % buffer.length;
+		return m;
 	}
+	
 	public synchronized void setMessageC(Message m) {
 		buffer[cons] = m;
 	}

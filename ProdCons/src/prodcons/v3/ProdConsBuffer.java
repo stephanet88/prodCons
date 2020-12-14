@@ -2,6 +2,8 @@ package prodcons.v3;
 
 import java.util.concurrent.Semaphore;
 
+
+
 public class ProdConsBuffer implements IProdConsBuffer {
 
 	Message[] buffer;
@@ -28,12 +30,16 @@ public class ProdConsBuffer implements IProdConsBuffer {
 
 		sem.acquire();
 		try {
-			buffer[prod] = m;
-			incrProd();
+			setMessageP(m);
 		} finally {
 			get.release();
 		}
 
+	}
+	
+	public synchronized void setMessageP(Message m) {
+		buffer[prod] = m;
+		prod = (prod + 1) % buffer.length;
 	}
 
 	@Override
@@ -72,16 +78,23 @@ public class ProdConsBuffer implements IProdConsBuffer {
 	
 	public Message doGet() throws InterruptedException {
 		get.acquire();
-		Message m = buffer[cons];
+		Message m;
 		try {
-			buffer[cons] = null; 
-			incrCons();
+			m = getMessageC();
 		} finally {
 			sem.release();
 		}
 		return m;
 	}
 
+	
+	public synchronized Message getMessageC() {
+		Message m =  buffer[cons];
+		buffer[cons] = null;
+		cons = (cons + 1) % buffer.length;
+		return m;
+	}
+	
 	public Message[] getMessageBuffer() {
 		return buffer;
 	}

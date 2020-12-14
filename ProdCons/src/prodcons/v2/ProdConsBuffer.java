@@ -27,26 +27,38 @@ public class ProdConsBuffer implements IProdConsBuffer {
 	public void put(Message m) throws InterruptedException {
 		sem.acquire();
 		try {
-			buffer[prod] = m;
+			setMessageP(m);
 			incrProd();
 		} finally {
 			get.release();
 		}
 
 	}
+	
+	public synchronized void setMessageP(Message m) {
+		buffer[prod] = m;
+	}
 
 	@Override
 	public Message get() throws InterruptedException {
 		get.acquire();
-		Message m = buffer[cons];
+		Message m;
 		try {
-			buffer[cons] = null; 
+			m = getMessageC();
+			setMessageC(null); 
 			incrCons();
 		} finally {
 			sem.release();
 		}
 		return m;
 
+	}
+	
+	public synchronized Message getMessageC() {
+		return buffer[cons];
+	}
+	public synchronized void setMessageC(Message m) {
+		buffer[cons] = m;
 	}
 
 	@Override

@@ -27,7 +27,7 @@ public class Consumer extends Thread {
 	public void consume() throws InterruptedException {
 		Message m = buffer.get();
 		if (m == null)
-			System.out.println(Thread.currentThread().getId());
+			System.out.println("id : " + Thread.currentThread().getId() + " est null");
 	}
 
 }

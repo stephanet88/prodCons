@@ -17,7 +17,6 @@ public class Producer extends Thread {
 		buffer = buff;
 		nbMessage = (int) (Math.random() * (maxProd - minProd) + minProd);
 		maxEx = maxExam;
-		
 	}
 	
 	public void run() {
@@ -27,6 +26,9 @@ public class Producer extends Thread {
 				Message m;
 				if(Math.random() >= 0.95) {
 					int n =  (int)(Math.random() * (maxEx - 1) + 2);
+					while (n > maxEx) {
+						n--;
+					}
 					m = new Message("Message n°" + i + " of Thread n°" + this.getId(), n);
 					produce(m, n);
 				} else {

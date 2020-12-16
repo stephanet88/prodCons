@@ -64,6 +64,7 @@ public class ProdConsBuffer implements IProdConsBuffer {
 			notifyAll();
 			m_got++;
 		}
+		//notifyAll();
 		return m;
 
 	}

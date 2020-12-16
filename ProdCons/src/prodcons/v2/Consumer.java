@@ -4,12 +4,15 @@ import java.util.Random;
 
 public class Consumer extends Thread {
 	
-	int consTime;
+	int consTime, ecart = 1;
 	ProdConsBuffer buffer;
 	
 	public Consumer(int time, ProdConsBuffer buff) {		
 		Random r = new Random();
-		consTime = (int) (time + r.nextGaussian());
+		consTime = (int) (time + r.nextGaussian() * ecart);
+		if (consTime < 0) {
+			consTime = 0;
+		}
 		buffer = buff;
 	}
 	

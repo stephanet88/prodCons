@@ -39,6 +39,7 @@ public class ProdConsBuffer implements IProdConsBuffer {
 		buffer[cons] = null;	
 		cons = (cons + 1) % buffer.length;
 		m_got++;
+		notifyAll();
 //		System.out.println("nbConsumed : " + m_got);
 		return m;
 	}

@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.InvalidPropertiesFormatException;
 import java.util.List;
 import java.util.Properties;
+import java.util.Random;
 
 public class TestProdCons {
 
@@ -53,9 +54,7 @@ public class TestProdCons {
 		long end = System.currentTimeMillis();
 		stopAll();
 		System.out.printf("L'efficacité est de pour la solution directe: %f\n", (float) nbMessage / (end - start));
-
 		System.out.println("That's all!");
-
 	}
 
 	public static void main(String[] args) throws InvalidPropertiesFormatException, IOException, InterruptedException {

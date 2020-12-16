@@ -30,8 +30,8 @@ public class Producer extends Thread {
 					m = new Message("Message n°" + i + " of Thread n°" + this.getId(), n);
 					produce(m, n);
 				} else {
-					m = new Message("Message n°" + i + " of Thread n°" + this.getId()); 
-					produce(m);
+					m = new Message("Message n°" + i + " of Thread n°" + this.getId(), 1); 
+					produce(m, 1);
 				}
 			}
 		} catch (InterruptedException e) {	

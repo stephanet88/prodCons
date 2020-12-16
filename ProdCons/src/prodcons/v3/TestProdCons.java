@@ -8,7 +8,8 @@ import java.util.List;
 import java.util.Properties;
 
 public class TestProdCons {
-
+	public static final int MINLEC = 1;
+	public static final int MAXLEC = 10;
 	ProdConsBuffer buff;
 	int nbMessage;
 	Producer[] producers;
@@ -69,9 +70,6 @@ public class TestProdCons {
 		int minProd = Integer.parseInt(properties.getProperty("minProd"));
 		int maxProd = Integer.parseInt(properties.getProperty("maxProd"));
 		
-		int minLec = Integer.parseInt(properties.getProperty("minLec"));
-		int maxLec = Integer.parseInt(properties.getProperty("maxLec"));
-		
 		int prodTime = Integer.parseInt(properties.getProperty("prodTime"));
 		
 		int nCons = Integer.parseInt(properties.getProperty("nCons"));
@@ -79,7 +77,7 @@ public class TestProdCons {
 		
 		int sizeBuffer = Integer.parseInt(properties.getProperty("bufSz"));
 		
-		TestProdCons tests = new TestProdCons(sizeBuffer, nProd, minProd, maxProd, prodTime, nCons, consTime, minLec, maxLec);
+		TestProdCons tests = new TestProdCons(sizeBuffer, nProd, minProd, maxProd, prodTime, nCons, consTime, MINLEC, MAXLEC);
 		
 	}
 

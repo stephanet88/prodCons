@@ -1,12 +1,15 @@
 package prodcons.v2;
 
+import java.util.Random;
+
 public class Consumer extends Thread {
 	
 	int consTime;
 	ProdConsBuffer buffer;
 	
 	public Consumer(int time, ProdConsBuffer buff) {		
-		consTime = time;
+		Random r = new Random();
+		consTime = (int) (time + r.nextGaussian());
 		buffer = buff;
 	}
 	

@@ -40,6 +40,7 @@ public class ProdConsBuffer implements IProdConsBuffer {
 	public synchronized void setMessageP(Message m) {
 		buffer[prod] = m;
 		prod = (prod + 1) % buffer.length;
+		m_tot++;
 	}
 
 	@Override
@@ -50,7 +51,7 @@ public class ProdConsBuffer implements IProdConsBuffer {
 			m = doGet();
 		} finally {
 			getk.release();
-			}
+		}
 		return m;
 
 	}
@@ -92,19 +93,11 @@ public class ProdConsBuffer implements IProdConsBuffer {
 		Message m =  buffer[cons];
 		buffer[cons] = null;
 		cons = (cons + 1) % buffer.length;
+		m_got++;
 		return m;
 	}
 	
 	public Message[] getMessageBuffer() {
 		return buffer;
 	}
-	
-	public synchronized void incrCons() {
-		cons = (cons + 1) % buffer.length;
-	}
-	
-	public synchronized void incrProd() {
-		prod = (prod + 1) % buffer.length;
-	}
-
 }

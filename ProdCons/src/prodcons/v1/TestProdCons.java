@@ -6,7 +6,6 @@ import java.util.Collections;
 import java.util.InvalidPropertiesFormatException;
 import java.util.List;
 import java.util.Properties;
-import java.util.Random;
 
 public class TestProdCons {
 

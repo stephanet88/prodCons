@@ -1,6 +1,5 @@
 package prodcons.v2;
 
-import prodcons.v2.Message;
 
 public class Producer extends Thread {
 	
